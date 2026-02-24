@@ -24,7 +24,7 @@ def get_financial_advice(user_transactions):
     Categorize each transaction (e.g., Food, Academics, Entertainment, Utilities).
     Analyze spending patterns and identify where money is being wasted.
     Provide exactly three 'Actionable Tips' specifically for a college student (e.g., suggesting student discounts or meal prepping).
-    Estimate how much can be saved by next month if tips are followed.
+    Estimate how much can be saved by next month if tips are followed by you .
     
     Keep the tone encouraging, witty, and concise.
     Return a JSON object with:
