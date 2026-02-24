@@ -1,0 +1,12 @@
+.vercel
+.git
+__pycache__
+*.pyc
+.env
+venv
+.vscode
+.gemini
+brain
+task.md
+implementation_plan.md
+walkthrough.md

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Finance Tracker | AI Mentor</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Student Finance Tracker</h1>
+            <p>Empowered by AI Mentor</p>
+        </header>
+
+        <main>
+            <section class="top-row">
+                <div class="card balance-card">
+                    <h3>Current Balance</h3>
+                    <p class="amount">$<span id="balance">0.00</span></p>
+                </div>
+                <div class="card health-card">
+                    <h3>Financial Health</h3>
+                    <div class="health-meter">
+                        <div id="health-bar" style="width: 0%"></div>
+                    </div>
+                    <p id="health-score">AI Analyzing...</p>
+                </div>
+            </section>
+
+            <section class="input-section">
+                <form id="finance-form">
+                    <input type="text" id="title" placeholder="Description (e.g. Canteen Lunch)" required>
+                    <input type="number" id="amount" placeholder="Amount (+/-)" required>
+                    <button type="submit">Add Entry</button>
+                </form>
+            </section>
+
+            <div class="dashboard-grid">
+                <section class="transactions-section card">
+                    <h3>History</h3>
+                    <ul id="transaction-list"></ul>
+                </section>
+
+                <section class="ai-insights card">
+                    <h3>AI Insights</h3>
+                    <button id="refresh-advice" class="btn-secondary">Refresh Analysis</button>
+                    <div id="advice-content" class="advice-content">
+                        <p class="placeholder">Add transactions to see AI magic...</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- AI Mentor Chat Widget -->
+    <div id="chat-widget" class="chat-widget">
+        <div class="chat-header">
+            <span>💬 Ask My Mentor</span>
+            <button id="toggle-chat">_</button>
+        </div>
+        <div id="chat-body" class="chat-body" style="display: none;">
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Is this laptop a good idea?">
+                <button id="send-chat">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('finance-form');
+        const list = document.getElementById('transaction-list');
+        const balanceDisplay = document.getElementById('balance');
+        const adviceContent = document.getElementById('advice-content');
+        const refreshAdviceBtn = document.getElementById('refresh-advice');
+        const healthBar = document.getElementById('health-bar');
+        const healthScoreText = document.getElementById('health-score');
+
+        const chatWidget = document.getElementById('chat-widget');
+        const toggleChat = document.getElementById('toggle-chat');
+        const chatBody = document.getElementById('chat-body');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatBtn = document.getElementById('send-chat');
+
+        async function fetchTransactions() {
+            const res = await fetch('/api/transactions');
+            const data = await res.json();
+            list.innerHTML = '';
+            let total = 0;
+            data.forEach(tx => {
+                const li = document.createElement('li');
+                li.className = tx.type;
+                li.innerHTML = `<span>${tx.title}</span> <span class="amt">${tx.amount > 0 ? '+' : ''}${tx.amount}</span>`;
+                list.appendChild(li);
+                total += tx.amount;
+            });
+            balanceDisplay.innerText = total.toFixed(2);
+        }
+
+        async function fetchAIAdvice() {
+            adviceContent.innerHTML = '<p class="loading">AI Thinking...</p>';
+            try {
+                const res = await fetch('/api/advice');
+                const data = await res.json();
+
+                let breakdownHtml = Object.entries(data.category_breakdown).map(([cat, amt]) => `<li>${cat}: $${amt}</li>`).join('');
+                let tipsHtml = data.savings_tips.map(tip => `<li>${tip}</li>`).join('');
+                let warningsHtml = data.warnings.map(w => `<div class="warning-pill">${w}</div>`).join('');
+
+                adviceContent.innerHTML = `
+                    <div class="insight-group">
+                        <h4>Spending Breakdown</h4>
+                        <ul>${breakdownHtml}</ul>
+                    </div>
+                    <div class="insight-group">
+                        <h4>Mentor Tips</h4>
+                        <ul>${tipsHtml}</ul>
+                    </div>
+                    <div class="insight-group">
+                        <h4>Alerts</h4>
+                        <div>${warningsHtml}</div>
+                    </div>
+                    <div class="potential-savings">Potential Savings: <strong>$${data.potential_savings}</strong></div>
+                `;
+
+                healthBar.style.width = data.health_score + '%';
+                healthScoreText.innerText = `Health Score: ${data.health_score}/100`;
+            } catch (err) {
+                adviceContent.innerHTML = '<p>Wait for API setup or check connection.</p>';
+            }
+        }
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const amount = document.getElementById('amount').value;
+            await fetch('/api/transactions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, amount })
+            });
+            form.reset();
+            fetchTransactions();
+            fetchAIAdvice();
+        };
+
+        refreshAdviceBtn.onclick = fetchAIAdvice;
+
+        // Chat Logic
+        toggleChat.onclick = () => {
+            chatBody.style.display = chatBody.style.display === 'none' ? 'flex' : 'none';
+            toggleChat.innerText = chatBody.style.display === 'none' ? '_' : '×';
+        };
+
+        async function sendChatMessage() {
+            const query = chatInput.value.trim();
+            if (!query) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg user-msg';
+            userMsg.innerText = query;
+            chatMessages.appendChild(userMsg);
+            chatInput.value = '';
+
+            const aiLoading = document.createElement('div');
+            aiLoading.className = 'msg ai-msg';
+            aiLoading.innerText = 'AI Mentor is typing...';
+            chatMessages.appendChild(aiLoading);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query })
+            });
+            const data = await res.json();
+            aiLoading.innerText = data.response;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        sendChatBtn.onclick = sendChatMessage;
+        chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendChatMessage(); };
+
+        fetchTransactions();
+        fetchAIAdvice();
+    </script>
+</body>
+
+</html>
