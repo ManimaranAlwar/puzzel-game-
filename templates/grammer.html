@@ -24,7 +24,6 @@
             margin-bottom: 10px;
         }
 
-        /* Score Tracker Style */
         #score-container {
             background: #FFD93D;
             padding: 10px 30px;
@@ -37,7 +36,6 @@
             border: 4px solid white;
         }
 
-        /* Container for Cards */
         .game-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -46,7 +44,6 @@
             width: 100%;
         }
 
-        /* Card Style */
         .card {
             background: #fdfdfd;
             padding: 25px;
@@ -57,9 +54,7 @@
             position: relative;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
+        .card:hover { transform: translateY(-5px); }
 
         .question-number {
             background: #FFD93D;
@@ -81,13 +76,12 @@
             font-weight: bold;
         }
 
-        /* Bubbly Buttons */
         .option-btn {
             display: block;
             width: 100%;
             padding: 12px;
             margin: 12px 0;
-            background: #9B72F2; /* Soft Purple */
+            background: #9B72F2;
             color: white;
             border: none;
             border-radius: 15px;
@@ -103,11 +97,6 @@
             box-shadow: 0 2px 0px #7b52cc;
         }
 
-        .option-btn:hover {
-            background: #AF8AF7;
-        }
-
-        /* Feedback Popups */
         .feedback {
             margin-top: 15px;
             font-weight: bold;
@@ -118,63 +107,84 @@
         /* Correct/Wrong States */
         .correct { border-color: #4CAF50 !important; background: #e8f5e9; }
         .wrong { border-color: #FF5252 !important; background: #ffebee; }
-
-        .correct .option-btn { background: #4CAF50; box-shadow: 0 5px 0px #388E3C; }
-        .wrong .option-btn { background: #FF5252; box-shadow: 0 5px 0px #D32F2F; }
-
     </style>
 </head>
 <body>
 
     <h1>✨ Grammar Glow-Up ✨</h1>
-
     <div id="score-container">Score: <span id="score">0</span></div>
 
-    <div class="game-container">
-        {% for p in puzzles %}
-        <div class="card" id="puzzle-{{ p.id }}">
-            <div class="question-text">
-                <span class="question-number">{{ loop.index }}</span>
-                {{ p.question }}
-            </div>
-            
-            {% for opt in p.options %}
-            <button class="option-btn" onclick="submitAnswer({{ p.id }}, '{{ opt }}', this)">
-                {{ opt }}
-            </button>
-            {% endfor %}
-            <div class="feedback"></div>
+    <div class="game-container" id="game-container">
         </div>
-        {% endfor %}
-    </div>
 
     <script>
+        // 1. Data moved from Python to JavaScript
+        const puzzles = [
+            {
+                id: 1,
+                question: "Everyone in the class _______ finished the test.",
+                options: ["have", "has", "are"],
+                correct: "has"
+            },
+            {
+                id: 2,
+                question: "I enjoy _______ mystery books at night.",
+                options: ["to read", "reading", "read"],
+                correct: "reading"
+            },
+            {
+                id: 3,
+                question: "The team _______ excited about their victory.",
+                options: ["was", "were", "are"],
+                correct: "was"
+            }
+        ];
+
         let score = 0;
         let answered = new Set();
 
-        async function submitAnswer(id, answer, btn) {
-            if (answered.has(id)) return; // Prevent double scoring
+        // 2. Function to render the puzzles (replacing Jinja2 loops)
+        function renderPuzzles() {
+            const container = document.getElementById('game-container');
+            container.innerHTML = puzzles.map((p, index) => `
+                <div class="card" id="puzzle-${p.id}">
+                    <div class="question-text">
+                        <span class="question-number">${index + 1}</span>
+                        ${p.question}
+                    </div>
+                    ${p.options.map(opt => `
+                        <button class="option-btn" onclick="checkAnswer(${p.id}, '${opt}')">
+                            ${opt}
+                        </button>
+                    `).join('')}
+                    <div class="feedback"></div>
+                </div>
+            `).join('');
+        }
 
-            const response = await fetch('/check', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ id: id, answer: answer })
-            });
-            const result = await response.json();
-            
+        // 3. Logic to check the answer (replacing the Flask /check route)
+        function checkAnswer(id, userAnswer) {
+            if (answered.has(id)) return;
+
+            const puzzle = puzzles.find(p => p.id === id);
             const card = document.getElementById(`puzzle-${id}`);
             const feedback = card.querySelector('.feedback');
             
-            if (result.correct) {
-                card.className = 'card correct';
+            if (userAnswer === puzzle.correct) {
+                card.classList.add('correct');
                 score += 100;
                 document.getElementById('score').innerText = score;
+                feedback.innerText = "✨ Flawless! ✨";
                 answered.add(id);
             } else {
-                card.className = 'card wrong';
+                card.classList.add('wrong');
+                feedback.innerText = "❌ Not quite a glow-up yet!";
+                // Optional: let them try again by not adding to 'answered'
             }
-            feedback.innerText = result.message;
         }
+
+        // Start the game
+        renderPuzzles();
     </script>
 </body>
 </html>
