@@ -29,23 +29,5 @@ def plant_growth():
 @app.route('/sequence')
 def sequence():
     return render_template('sequence.html')
-
-# API Logic for Grammar Checking
-@app.route('/check', methods=['POST'])
-def check():
-    data = request.json
-    puzzle_id = data.get('id')
-    user_answer = data.get('answer')
-    puzzle = next((p for p in puzzles if p['id'] == puzzle_id), None)
-    
-    if not puzzle:
-        return jsonify({"correct": False, "message": "Puzzle error"}), 404
-    
-    is_correct = (puzzle['correct'] == user_answer)
-    return jsonify({
-        "correct": is_correct,
-        "message": "✨ Flawless! ✨" if is_correct else "❌ Try again!"
-    })
-
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
