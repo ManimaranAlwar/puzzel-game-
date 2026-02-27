@@ -257,7 +257,7 @@
             `).join('');
         }
 
-        function checkAnswer(id, userAnswer, btnElement) {
+function checkAnswer(id, userAnswer, btnElement) {
             if (answeredIds.has(id)) return;
 
             const puzzle = puzzles.find(p => p.id === id);
@@ -265,22 +265,24 @@
             const feedback = document.getElementById(`feedback-${id}`);
             const buttons = card.querySelectorAll('.option-btn');
 
+            // Mark as answered so they can't click again
+            answeredIds.add(id);
+            answeredCount++;
+            updateProgress();
+            buttons.forEach(btn => btn.disabled = true);
+
             if (userAnswer === puzzle.correct) {
                 card.classList.add('correct');
                 feedback.innerHTML = "<span style='color: #2e7d32'>✅ Perfect!</span>";
                 score += 100;
                 document.getElementById('score').innerText = score;
-                answeredIds.add(id);
-                answeredCount++;
-                updateProgress();
-                buttons.forEach(btn => btn.disabled = true);
             } else {
                 card.classList.add('wrong');
-                feedback.innerHTML = "<span style='color: #d32f2f'>❌ Try again!</span>";
-                setTimeout(() => {
-                    card.classList.remove('wrong');
-                    feedback.innerHTML = "";
-                }, 800);
+                // Highlight the button they clicked as wrong
+                btnElement.style.background = "#FF5252";
+                btnElement.style.boxShadow = "0 5px 0px #b33939";
+                
+                feedback.innerHTML = `<span style='color: #d32f2f'>❌ Incorrect. Correct: <strong>${puzzle.correct}</strong></span>`;
             }
         }
 
