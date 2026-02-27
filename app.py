@@ -17,3 +17,5 @@ def plant_growth():
 @app.route('/sequence')
 def sequence():
     return render_template('sequence.html')
+if __name__ == '__main__':
+    app.run(debug=True)

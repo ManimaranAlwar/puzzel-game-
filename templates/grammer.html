@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Grammar Glow-Up Mobile</title>
     <style>
-        /* Mobile-First Design */
+        :root {
+            --primary-purple: #9B72F2;
+            --accent-yellow: #FFD93D;
+            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 40%, #a18cd1 100%);
+        }
+
         body {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 40%, #a18cd1 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             margin: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -19,48 +24,80 @@
             color: #333;
         }
 
-        /* Sticky Header for Mobile */
+        /* Sticky Header with Home Button */
         .header-section {
             position: sticky;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 10px 0;
+            padding: 12px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 1000;
-            border-bottom: 3px solid #FFD93D;
-            border-radius: 0 0 20px 20px;
+            border-bottom: 4px solid var(--accent-yellow);
+            border-radius: 0 0 25px 25px;
             margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 10px;
+        }
+
+        .home-btn {
+            background: #fff;
+            border: 2px solid var(--primary-purple);
+            color: var(--primary-purple);
+            width: 45px;
+            height: 45px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0 3px 0px var(--primary-purple);
+            transition: all 0.1s;
+        }
+
+        .home-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0px var(--primary-purple);
         }
 
         h1 {
-            font-size: 1.5rem;
-            margin: 5px 0;
-            color: #9B72F2;
+            font-size: 1.2rem;
+            margin: 0;
+            color: var(--primary-purple);
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 900;
         }
 
         #score-container {
-            background: #FFD93D;
-            padding: 5px 20px;
+            background: var(--accent-yellow);
+            padding: 5px 15px;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border: 2px solid white;
+            white-space: nowrap;
         }
 
-        /* Progress Bar */
         .progress-container {
-            width: 80%;
-            height: 8px;
+            width: 100%;
+            max-width: 450px;
+            height: 10px;
             background: #eee;
             border-radius: 10px;
-            margin-top: 10px;
             overflow: hidden;
         }
 
@@ -68,110 +105,116 @@
             height: 100%;
             background: #4CAF50;
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Responsive Card Stack */
+        /* Game Cards */
         .game-container {
             display: flex;
             flex-direction: column;
             gap: 20px;
             width: 100%;
-            max-width: 450px; /* Perfect for mobile and thin desktop views */
+            max-width: 450px;
         }
 
         .card {
             background: #ffffff;
             padding: 20px;
-            border-radius: 20px;
-            border: 4px solid #FFD93D;
-            box-shadow: 0 6px 0px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
+            border-radius: 25px;
+            border: 4px solid var(--accent-yellow);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             box-sizing: border-box;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .question-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 15px;
         }
 
         .question-number {
-            background: #FFD93D;
-            min-width: 35px;
-            height: 35px;
+            background: var(--accent-yellow);
+            min-width: 32px;
+            height: 32px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 50%;
+            border-radius: 10px;
             font-weight: bold;
             border: 2px solid #333;
             margin-right: 12px;
+            margin-top: 2px;
         }
 
         .question-text {
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.4;
+            color: #2D3436;
         }
 
-        /* Large Touch Targets for Buttons */
         .option-btn {
             display: block;
             width: 100%;
-            padding: 16px; /* Fat buttons are easier to hit on phones */
-            margin: 12px 0;
-            background: #9B72F2;
+            padding: 16px;
+            margin: 10px 0;
+            background: var(--primary-purple);
             color: white;
             border: none;
-            border-radius: 15px;
-            font-size: 1rem;
+            border-radius: 18px;
+            font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 0px #7b52cc;
-            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 0 5px 0px #7b52cc;
+            transition: all 0.1s;
             -webkit-tap-highlight-color: transparent;
         }
 
         .option-btn:active {
-            transform: translateY(2px);
+            transform: translateY(3px);
             box-shadow: 0 2px 0px #7b52cc;
         }
 
-        .option-btn:disabled {
-            opacity: 0.7;
-            cursor: default;
-        }
+        .option-btn:disabled { opacity: 0.6; }
 
         .feedback {
             margin-top: 10px;
-            font-weight: bold;
+            font-weight: 800;
             text-align: center;
-            font-size: 1rem;
-            min-height: 1.2rem;
+            min-height: 1.5rem;
         }
 
-        /* Success/Error States */
-        .correct { border-color: #4CAF50 !important; background: #f9fff9; }
-        .wrong { border-color: #FF5252 !important; background: #fff9f9; }
+        .correct { border-color: #4CAF50 !important; background: #f0fff0; }
+        .wrong { animation: shake 0.3s ease-in-out; border-color: #FF5252 !important; }
 
-        .correct-text { color: #2e7d32; }
-        .wrong-text { color: #d32f2f; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
 
         footer {
-            margin-top: 30px;
-            padding: 20px;
+            margin: 40px 0;
             color: white;
-            font-size: 0.8rem;
-            opacity: 0.8;
+            font-weight: bold;
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
     <div class="header-section">
-        <h1>✨ Grammar Glow-Up</h1>
-        <div id="score-container">Score: <span id="score">0</span></div>
+        <div class="header-top">
+            <a href="/" class="home-btn" aria-label="Home">🏠</a>
+            <h1>Glow-Up</h1>
+            <div id="score-container">✨ <span id="score">0</span></div>
+        </div>
         <div class="progress-container">
             <div id="progress-fill"></div>
         </div>
@@ -184,30 +227,10 @@
 
     <script>
         const puzzles = [
-            {
-                id: 1,
-                question: "Everyone in the class _______ finished the test.",
-                options: ["have", "has", "are"],
-                correct: "has"
-            },
-            {
-                id: 2,
-                question: "I enjoy _______ mystery books at night.",
-                options: ["to read", "reading", "read"],
-                correct: "reading"
-            },
-            {
-                id: 3,
-                question: "The team _______ excited about their victory.",
-                options: ["was", "were", "are"],
-                correct: "was"
-            },
-            {
-                id: 4,
-                question: "Neither of the movies _______ very good.",
-                options: ["was", "were", "been"],
-                correct: "was"
-            }
+            { id: 1, question: "Everyone in the class _______ finished the test.", options: ["have", "has", "are"], correct: "has" },
+            { id: 2, question: "I enjoy _______ mystery books at night.", options: ["to read", "reading", "read"], correct: "reading" },
+            { id: 3, question: "The team _______ excited about their victory.", options: ["was", "were", "are"], correct: "was" },
+            { id: 4, question: "Neither of the movies _______ very good.", options: ["was", "were", "been"], correct: "was" }
         ];
 
         let score = 0;
@@ -229,7 +252,7 @@
                             </button>
                         `).join('')}
                     </div>
-                    <div class="feedback" id="feedback-${p.id}"></div>
+                    <div id="feedback-${p.id}" class="feedback"></div>
                 </div>
             `).join('');
         }
@@ -244,46 +267,28 @@
 
             if (userAnswer === puzzle.correct) {
                 card.classList.add('correct');
-                feedback.innerHTML = "<span class='correct-text'>✨ Flawless Glow-Up!</span>";
+                feedback.innerHTML = "<span style='color: #2e7d32'>✅ Perfect!</span>";
                 score += 100;
                 document.getElementById('score').innerText = score;
-                
-                // Lock the card
                 answeredIds.add(id);
                 answeredCount++;
                 updateProgress();
-                
-                // Disable buttons
                 buttons.forEach(btn => btn.disabled = true);
             } else {
                 card.classList.add('wrong');
-                feedback.innerHTML = "<span class='wrong-text'>❌ Not quite! Try again.</span>";
-                
-                // Haptic feedback feel: wiggle the card
-                card.style.transform = "translateX(10px)";
-                setTimeout(() => card.style.transform = "translateX(-10px)", 50);
-                setTimeout(() => card.style.transform = "translateX(0)", 100);
-
-                // Clean up "wrong" class after a moment so they can try again
+                feedback.innerHTML = "<span style='color: #d32f2f'>❌ Try again!</span>";
                 setTimeout(() => {
                     card.classList.remove('wrong');
                     feedback.innerHTML = "";
-                }, 1500);
+                }, 800);
             }
         }
 
         function updateProgress() {
             const percentage = (answeredCount / puzzles.length) * 100;
             document.getElementById('progress-fill').style.width = percentage + "%";
-            
-            if(answeredCount === puzzles.length) {
-                setTimeout(() => {
-                    alert("🎉 Incredible! You've achieved a total Grammar Glow-Up!");
-                }, 500);
-            }
         }
 
-        // Initialize
         renderPuzzles();
     </script>
 </body>

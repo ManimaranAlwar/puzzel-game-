@@ -17,10 +17,42 @@
 
         body {
             margin: 0; padding: 10px; min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; flex-direction: column; align-items: center;
             background: var(--bg-gradient);
             font-family: 'Nunito', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+        }
+
+        /* Magical Navigation Bar */
+        .nav-container {
+            width: 100%;
+            max-width: 380px;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+            padding: 5px;
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid white;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+
+        .home-btn:active {
+            transform: scale(0.9) translateY(2px);
+            background: rgba(255, 255, 255, 0.4);
         }
 
         .game-container {
@@ -28,6 +60,12 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             text-align: center; width: 100%; max-width: 380px;
             border: 4px solid #fff;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
@@ -40,7 +78,6 @@
             font-size: 1rem; color: #5c6bc0; margin-bottom: 20px; font-weight: 700;
         }
 
-        /* Puzzle Zone: Better Contrast for Mobile */
         .puzzle-zone {
             background: #f8f9fa; border-radius: 25px;
             padding: 15px; border: 2px solid #e0e0e0;
@@ -68,7 +105,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Large Touch Inputs */
         .input-group {
             display: flex; flex-direction: column; gap: 15px; align-items: center;
         }
@@ -115,6 +151,10 @@
     </style>
 </head>
 <body>
+
+    <div class="nav-container">
+        <a href="/" class="home-btn" aria-label="Home">🏠</a>
+    </div>
 
     <div class="game-container" id="main-card">
         <div id="puzzle-content">

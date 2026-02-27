@@ -9,103 +9,100 @@
     <style>
         body { 
             font-family: 'Outfit', sans-serif; 
-            background-color: #F7F7FD; 
+            background: linear-gradient(135deg, #F7F7FD 0%, #E2E8F0 100%);
+            min-height: 100vh;
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* Smooth transitions for touch */
         .game-card { 
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             touch-action: manipulation;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers items horizontally */
+            justify-content: center; /* Centers items vertically */
+            text-align: center; /* Centers the text lines */
         }
 
-        /* Hover effect for desktop, active effect for mobile */
         .game-card:hover, .game-card:active { 
-            transform: scale(1.02) translateY(-5px); 
-            border-bottom-width: 4px;
+            transform: scale(1.02) translateY(-8px); 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-        /* Custom scrollbar for a clean look */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .icon-box {
+            transition: transform 0.3s ease;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #c7d2fe;
-            border-radius: 10px;
+        
+        .game-card:hover .icon-box {
+            transform: rotate(-10deg) scale(1.1);
         }
     </style>
 </head>
-<body class="p-4 md:p-12">
+<body class="p-6 md:p-12 flex items-center justify-center">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-10 mt-6 text-center">
-            <h1 class="text-3xl md:text-6xl font-black text-[#0F2C67] tracking-tight leading-tight">
-                BOOK-BUDDY<br class="md:hidden"> CHALLENGE
+    <div class="max-w-6xl w-full mx-auto">
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl md:text-6xl font-black text-[#0F2C67] tracking-tight leading-tight uppercase">
+                Book-Buddy<br class="md:hidden"> <span class="text-indigo-600">Challenge</span>
             </h1>
-            <p class="text-lg md:text-xl text-gray-500 mt-3 font-medium px-4">
+            <div class="h-1.5 w-24 bg-indigo-600 mx-auto mt-4 rounded-full"></div>
+            <p class="text-lg md:text-xl text-gray-500 mt-6 font-medium">
                 Pick a mission to start your adventure! 🚀
             </p>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
             
-            <a href="/grammer" class="game-card group relative block p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white border-b-[8px] md:border-b-[12px] border-indigo-200 shadow-xl">
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-indigo-100 rounded-2xl md:rounded-3xl flex items-center justify-center text-4xl md:text-5xl mb-4 md:mb-6">
+            <a href="/grammer" class="game-card group relative p-8 rounded-[2.5rem] bg-white border-b-[12px] border-indigo-200 shadow-xl">
+                <div class="icon-box w-20 h-20 md:w-24 md:h-24 bg-indigo-50 rounded-3xl flex items-center justify-center text-5xl mb-6">
                     ✍️
                 </div>
                 <h3 class="text-2xl md:text-3xl font-black text-indigo-900 leading-tight">
                     Grammar<br>Glow-Up
                 </h3>
-                <div class="mt-4 flex items-center text-indigo-500 font-bold uppercase text-xs tracking-widest">
-                    Start Mission <span class="ml-2 group-hover:translate-x-2 transition-transform">→</span>
-                </div>
+                <span class="mt-6 px-6 py-2 bg-indigo-100 text-indigo-600 rounded-full font-bold text-sm uppercase tracking-wider group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                    Start Mission
+                </span>
             </a>
 
-            <a href="/plant_growth" class="game-card group relative block p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white border-b-[8px] md:border-b-[12px] border-emerald-200 shadow-xl">
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-emerald-100 rounded-2xl md:rounded-3xl flex items-center justify-center text-4xl md:text-5xl mb-4 md:mb-6">
+            <a href="/plant_growth" class="game-card group relative p-8 rounded-[2.5rem] bg-white border-b-[12px] border-emerald-200 shadow-xl">
+                <div class="icon-box w-20 h-20 md:w-24 md:h-24 bg-emerald-50 rounded-3xl flex items-center justify-center text-5xl mb-6">
                     🌱
                 </div>
                 <h3 class="text-2xl md:text-3xl font-black text-emerald-900 leading-tight">
                     Plant<br>Growth
                 </h3>
-                <div class="mt-4 flex items-center text-emerald-500 font-bold uppercase text-xs tracking-widest">
-                    Grow Now <span class="ml-2 group-hover:translate-x-2 transition-transform">→</span>
-                </div>
+                <span class="mt-6 px-6 py-2 bg-emerald-100 text-emerald-600 rounded-full font-bold text-sm uppercase tracking-wider group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                    Grow Now
+                </span>
             </a>
 
-            <a href="/sequence" class="game-card group relative block p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white border-b-[8px] md:border-b-[12px] border-orange-200 shadow-xl">
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-orange-100 rounded-2xl md:rounded-3xl flex items-center justify-center text-4xl md:text-5xl mb-4 md:mb-6">
+            <a href="/sequence" class="game-card group relative p-8 rounded-[2.5rem] bg-white border-b-[12px] border-orange-200 shadow-xl">
+                <div class="icon-box w-20 h-20 md:w-24 md:h-24 bg-orange-50 rounded-3xl flex items-center justify-center text-5xl mb-6">
                     🔢
                 </div>
                 <h3 class="text-2xl md:text-3xl font-black text-orange-900 leading-tight">
                     Sequence<br>Challenge
                 </h3>
-                <div class="mt-4 flex items-center text-orange-500 font-bold uppercase text-xs tracking-widest">
-                    Solve it <span class="ml-2 group-hover:translate-x-2 transition-transform">→</span>
-                </div>
+                <span class="mt-6 px-6 py-2 bg-orange-100 text-orange-600 rounded-full font-bold text-sm uppercase tracking-wider group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                    Solve it
+                </span>
             </a>
 
         </div>
 
-        <footer class="mt-16 text-center text-gray-400 text-sm font-medium pb-8">
-            &copy; 2026 Book-Buddy Adventures
+        <footer class="mt-20 text-center">
+            <p class="text-gray-400 text-sm font-bold tracking-widest uppercase italic">
+                &copy; 2026 Book-Buddy Adventures
+            </p>
         </footer>
     </div>
 
     <script>
-        console.log("Book-Buddy Mobile Dashboard Active 🚀");
-        
-        // Optional: Add a subtle haptic feedback vibe for mobile users
+        // Subtle interaction feedback
         document.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('touchstart', () => {
-                card.style.opacity = "0.9";
-            });
-            card.addEventListener('touchend', () => {
-                card.style.opacity = "1";
-            });
+            card.addEventListener('touchstart', () => card.style.transform = "scale(0.98)");
+            card.addEventListener('touchend', () => card.style.transform = "scale(1.02)");
         });
     </script>
 </body>
