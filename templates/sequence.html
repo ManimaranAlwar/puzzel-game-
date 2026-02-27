@@ -3,188 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Magic Vault Mobile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    <title>Modern Vault Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ffeb3b;
-            --secondary: #ff4081;
-            --accent: #00e676;
-            --bg-gradient: linear-gradient(180deg, #6a11cb 0%, #2575fc 100%);
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff007a;
+            --vault-dark: #0a0b10;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0; padding: 10px; min-height: 100vh;
+            margin: 0; padding: 20px; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            background: var(--bg-gradient);
-            font-family: 'Nunito', sans-serif;
+            background: radial-gradient(circle at center, #1a1c2c 0%, #050505 100%);
+            font-family: 'Outfit', sans-serif;
+            color: white;
             overflow-x: hidden;
         }
 
-        /* Magical Navigation Bar */
+        /* Tech Nav */
         .nav-container {
             width: 100%;
-            max-width: 380px;
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 15px;
-            padding: 5px;
+            max-width: 400px;
+            margin-bottom: 20px;
         }
 
         .home-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: var(--glass);
             backdrop-filter: blur(10px);
-            border: 2px solid white;
-            color: white;
-            width: 55px;
-            height: 55px;
-            border-radius: 20px;
+            border: 1px solid var(--border);
+            color: var(--neon-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
             text-decoration: none;
-            font-size: 1.8rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.2s;
+            font-size: 1.2rem;
+            transition: 0.3s;
         }
 
-        .home-btn:active {
-            transform: scale(0.9) translateY(2px);
-            background: rgba(255, 255, 255, 0.4);
-        }
+        .home-btn:hover { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
 
+        /* The Main Vault Card */
         .game-container {
-            background: white; padding: 25px 20px; border-radius: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            text-align: center; width: 100%; max-width: 380px;
-            border: 4px solid #fff;
-            animation: fadeIn 0.5s ease-out;
+            background: rgba(15, 15, 25, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 40px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Scanning Laser Line */
+        .game-container::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 15px var(--neon-blue);
+            animation: scan 4s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
         }
 
         h1 {
-            font-family: 'Fredoka One', cursive; color: var(--secondary);
-            font-size: 2.2rem; margin: 0 0 5px 0;
-            text-shadow: 2px 2px 0px #fce4ec;
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin: 0;
+            background: linear-gradient(to right, #fff, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
         }
 
         .instruction {
-            font-size: 1rem; color: #5c6bc0; margin-bottom: 20px; font-weight: 700;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
 
+        /* Digital Display Area */
         .puzzle-zone {
-            background: #f8f9fa; border-radius: 25px;
-            padding: 15px; border: 2px solid #e0e0e0;
-            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            font-family: 'JetBrains+Mono', monospace;
         }
 
         .line {
-            font-size: 1.6rem; font-weight: 800;
-            margin: 12px 0; color: #311b92;
-            display: flex; justify-content: center; align-items: center;
+            font-size: 1.4rem;
+            margin: 10px 0;
+            color: #ccc;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .arrow { color: var(--neon-pink); opacity: 0.7; }
+
+        .target-box {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+            font-weight: 800;
+        }
+
+        /* Input Section */
+        .input-group {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
 
-        .arrow { color: #ffab40; font-weight: 900; }
-
-        .target-box {
-            background: var(--secondary); color: white;
-            padding: 4px 15px; border-radius: 12px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .input-group {
-            display: flex; flex-direction: column; gap: 15px; align-items: center;
-        }
-
         input {
-            width: 140px; height: 75px; font-size: 2.5rem;
-            border-radius: 20px; border: 3px solid #ced4da;
-            text-align: center; font-family: 'Fredoka One', cursive;
-            background: #fff; color: #2575fc; outline: none;
-            transition: 0.2s;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border);
+            color: var(--neon-blue);
+            width: 100%;
+            height: 70px;
+            border-radius: 15px;
+            font-size: 2rem;
+            text-align: center;
+            font-family: 'JetBrains+Mono', monospace;
+            outline: none;
+            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--accent); transform: translateY(-3px); }
+        input:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+        }
 
         .btn-check {
-            background: var(--accent); color: white; border: none;
-            width: 100%; height: 65px;
-            font-size: 1.5rem; font-family: 'Fredoka One', cursive;
-            border-radius: 20px; cursor: pointer;
-            box-shadow: 0 6px 0 #00c853; transition: 0.1s;
+            background: var(--neon-blue);
+            color: var(--vault-dark);
+            border: none;
+            width: 100%;
+            height: 60px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 15px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: 0.3s;
         }
 
-        .btn-check:active { transform: translateY(3px); box-shadow: 0 3px 0 #00c853; }
+        .btn-check:active { transform: scale(0.98); opacity: 0.8; }
 
         .btn-hint {
-            background: #6c757d; color: white; border: none;
-            padding: 10px 25px; border-radius: 50px;
-            font-size: 0.9rem; font-weight: 800; margin-top: 10px;
+            background: transparent;
+            color: #666;
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
         }
 
         #hint-display {
-            margin-top: 15px; background: #fff3e0;
-            padding: 12px; border-radius: 15px;
-            border: 1px solid #ffe0b2; color: #e65100;
-            display: none; animation: slideDown 0.3s ease-out;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #aaa;
+            display: none;
+            border: 1px dashed var(--border);
         }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Win Screen Styles */
+        .success-glow {
+            color: var(--neon-blue);
+            text-shadow: 0 0 20px var(--neon-blue);
         }
 
         .hidden { display: none; }
+
+        #status {
+            font-family: 'JetBrains+Mono', monospace;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
 
     <div class="nav-container">
-        <a href="/" class="home-btn" aria-label="Home">🏠</a>
+        <a href="/" class="home-btn">✕</a>
     </div>
 
     <div class="game-container" id="main-card">
         <div id="puzzle-content">
-            <h1>Magic Vault! 💎</h1>
-            <p class="instruction">Discover the hidden pattern...</p>
+            <h1>System Vault</h1>
+            <p class="instruction">Decipher Sequence</p>
             
             <div class="puzzle-zone">
-                <div class="line">2 <span class="arrow">➜</span> 6</div>
-                <div class="line">4 <span class="arrow">➜</span> 20</div>
-                <div class="line">6 <span class="arrow">➜</span> 42</div>
-                <div class="line">8 <span class="arrow">➜</span> <span class="target-box">?</span></div>
+                <div class="line"><span>02</span> <span class="arrow">>></span> <span>06</span></div>
+                <div class="line"><span>04</span> <span class="arrow">>></span> <span>20</span></div>
+                <div class="line"><span>06</span> <span class="arrow">>></span> <span>42</span></div>
+                <div class="line"><span>08</span> <span class="arrow">>></span> <span class="target-box">[ ?? ]</span></div>
             </div>
 
             <div class="input-group">
-                <input type="number" id="user-ans" pattern="\d*" inputmode="numeric" placeholder="??" autofocus>
-                <button class="btn-check" onclick="checkAnswer()">UNLOCK</button>
-                <button class="btn-hint" onclick="toggleHint()">💡 NEED A CLUE?</button>
+                <input type="number" id="user-ans" pattern="\d*" inputmode="numeric" placeholder="00" autofocus>
+                <button class="btn-check" onclick="checkAnswer()">INITIALIZE UNLOCK</button>
+                <button class="btn-hint" onclick="toggleHint()">RECOVER CLUE</button>
                 <div id="hint-display">
-                    Multiply the number by the <b>next</b> number! <br>
-                    Example: 2 × 3 = 6
+                    ALGORITHM: [N] × [N + 1] <br>
+                    LOG: 2 × 3 = 6
                 </div>
             </div>
-            <div id="status" style="margin-top: 15px; font-weight: 800; min-height: 20px;"></div>
+            <div id="status" style="margin-top: 20px; min-height: 20px;"></div>
         </div>
 
         <div id="win-content" class="hidden">
-            <div style="font-size: 5rem; margin-bottom: 20px;">🏆</div>
-            <h1 style="color: #4caf50;">UNLOCKED!</h1>
-            <p style="font-size: 1.2rem; color: #333;">The Vault is yours!<br><b>8 × 9 = 72</b></p>
-            <button class="btn-check" onclick="location.reload()" style="background: #2575fc; box-shadow: 0 6px 0 #1e5fcc; margin-top: 20px;">PLAY AGAIN</button>
+            <div style="font-size: 4rem; margin-bottom: 10px;">🔓</div>
+            <h1 class="success-glow">ACCESS GRANTED</h1>
+            <p style="color: #888; margin: 20px 0;">Sequence Verified: 8 × 9 = 72</p>
+            <button class="btn-check" onclick="location.reload()" style="background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);">REBOOT SYSTEM</button>
         </div>
     </div>
 
@@ -202,42 +260,22 @@
             if (input.value == "72") {
                 document.getElementById('puzzle-content').classList.add('hidden');
                 document.getElementById('win-content').classList.remove('hidden');
-                confetti();
+                // Optional haptic vibration for mobile
+                if (window.navigator.vibrate) window.navigator.vibrate([100, 50, 100]);
             } else {
-                status.innerText = "❌ That's not it!";
-                status.style.color = "#d32f2f";
+                status.innerText = "ACCESS DENIED: ERROR_CODE_72";
+                status.style.color = "var(--neon-pink)";
                 
+                // Shake animation
                 card.animate([
-                    { transform: 'translateX(0)' },
-                    { transform: 'translateX(-10px)' },
-                    { transform: 'translateX(10px)' },
-                    { transform: 'translateX(0)' }
-                ], { duration: 200 });
+                    { transform: 'translateX(0)', borderColor: 'var(--border)' },
+                    { transform: 'translateX(-5px)', borderColor: 'var(--neon-pink)' },
+                    { transform: 'translateX(5px)', borderColor: 'var(--neon-pink)' },
+                    { transform: 'translateX(0)', borderColor: 'var(--border)' }
+                ], { duration: 250 });
 
                 input.value = "";
                 input.focus();
-            }
-        }
-
-        function confetti() {
-            for (let i = 0; i < 50; i++) {
-                const c = document.createElement('div');
-                c.style.position = 'fixed';
-                c.style.width = '10px';
-                c.style.height = '10px';
-                c.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                c.style.left = Math.random() * 100 + 'vw';
-                c.style.top = '-10px';
-                c.style.zIndex = '100';
-                document.body.appendChild(c);
-
-                c.animate([
-                    { transform: 'translateY(0) rotate(0)', opacity: 1 },
-                    { transform: `translateY(110vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
-                ], {
-                    duration: 2000 + Math.random() * 1000,
-                    easing: 'linear'
-                }).onfinish = () => c.remove();
             }
         }
     </script>

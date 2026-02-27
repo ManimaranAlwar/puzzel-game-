@@ -3,258 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nature Lab: Growth Explosion</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+    <title>Bio-Gen Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&family=Outfit:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --leaf-green: #4caf50;
-            --dirt-brown: #795548;
-            --sky-blue: #e3f2fd;
-            --bg-gradient: linear-gradient(180deg, #a1c4fd 0%, #c2e9fb 100%);
-            --correct: #2e7d32;
-            --wrong: #d32f2f;
+            --neon-green: #00ff9d;
+            --deep-forest: #040d0a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(0, 255, 157, 0.2);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            margin: 0; padding: 10px; min-height: 100vh;
+            margin: 0; padding: 20px; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            background: var(--bg-gradient);
-            font-family: 'Nunito', sans-serif;
+            background: radial-gradient(circle at center, #0a1f16 0%, #020504 100%);
+            font-family: 'Outfit', sans-serif;
+            color: white;
             overflow-x: hidden;
         }
 
-        /* Navigation Bar */
-        .nav-header {
+        /* Tech Navigation */
+        .nav-container {
             width: 100%;
             max-width: 400px;
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 15px;
-            padding: 0 5px;
+            margin-bottom: 20px;
         }
 
         .home-btn {
-            background: white;
-            border: 3px solid var(--leaf-green);
-            color: var(--leaf-green);
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            color: var(--neon-green);
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            display: flex; justify-content: center; align-items: center;
             text-decoration: none;
-            font-size: 1.6rem;
-            box-shadow: 0 4px 0px var(--leaf-green);
-            transition: all 0.1s;
+            transition: 0.3s;
         }
 
-        .home-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0px var(--leaf-green);
-        }
-
+        /* Main Research Terminal */
         .game-container {
-            background: white; padding: 30px 20px; border-radius: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center; width: 100%; max-width: 400px;
-            border: 4px solid #fff; position: relative;
+            background: rgba(5, 15, 10, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 35px 25px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 40px rgba(0, 255, 157, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Pulse Grid Effect */
+        .game-container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px), 
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.1;
+            z-index: -1;
         }
 
         h1 {
-            font-family: 'Fredoka One', cursive; color: var(--leaf-green);
-            font-size: 1.6rem; margin: 0 0 15px 0;
-            line-height: 1.2;
+            font-weight: 900; font-size: 1.6rem;
+            letter-spacing: 1px; margin: 0;
+            background: linear-gradient(to right, #fff, var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
         }
 
-        .hint-box {
-            background: #fff9c4; border: 2px solid #fbc02d;
-            border-radius: 20px; padding: 15px; margin-bottom: 20px;
-            display: none; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .subtitle {
+            font-size: 0.75rem; color: #666;
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 25px;
         }
 
-        .visual-growth {
-            display: flex; justify-content: center; align-items: flex-end;
-            gap: 12px; margin-top: 10px;
-        }
-
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
+        /* Data Display */
         .puzzle-zone {
-            background: #f1f8e9; border-radius: 25px;
-            padding: 20px; border: 2px solid #c8e6c9; margin-bottom: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            font-family: 'JetBrains+Mono', monospace;
         }
 
         .data-row {
             display: flex; justify-content: space-between;
-            padding: 8px 10px; font-weight: 800; color: #455a64;
-            font-size: 1.1rem; border-bottom: 1px dashed #c8e6c9;
+            padding: 12px 10px; border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+            color: #aaa;
         }
-        .data-row:last-child { border-bottom: none; }
 
-        .highlight-day { color: #f57c00; font-size: 1.3rem; }
+        .data-row:last-child { border-bottom: none; color: var(--neon-green); font-weight: 800; }
 
-        .input-group {
-            display: flex; flex-direction: column; gap: 15px; align-items: center;
-        }
+        /* Input Area */
+        .input-group { display: flex; flex-direction: column; gap: 15px; }
 
         input {
-            width: 100%; max-width: 200px; height: 70px; 
-            font-size: 2.2rem; border-radius: 20px;
-            border: 3px solid #e0e0e0; text-align: center;
-            font-family: 'Fredoka One', cursive; outline: none;
-            transition: border-color 0.3s; background: #fafafa;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            color: var(--neon-green);
+            height: 70px; border-radius: 15px;
+            font-size: 2rem; text-align: center;
+            font-family: 'JetBrains+Mono', monospace;
+            outline: none; transition: 0.3s;
         }
 
-        input:focus { border-color: var(--leaf-green); background: white; }
+        input:focus { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 157, 0.2); }
 
-        .btn-action {
-            background: var(--leaf-green); color: white; border: none;
-            width: 100%; padding: 18px 0;
-            font-size: 1.3rem; font-family: 'Fredoka One', cursive;
-            border-radius: 20px; cursor: pointer;
-            box-shadow: 0 6px 0 #388e3c; transition: all 0.1s;
-            text-transform: uppercase; letter-spacing: 1px;
+        .btn-prime {
+            background: var(--neon-green); color: black;
+            border: none; height: 60px; border-radius: 15px;
+            font-weight: 800; letter-spacing: 1px; cursor: pointer;
+            transition: 0.3s;
         }
 
         .btn-hint {
-            background: #ffb74d; box-shadow: 0 4px 0 #f57c00;
-            font-size: 1rem; margin-top: 5px; width: 80%;
+            background: transparent; color: #555; border: none;
+            font-size: 0.8rem; letter-spacing: 1px; cursor: pointer;
         }
 
-        .btn-action:active { 
-            transform: translateY(4px); 
-            box-shadow: 0 2px 0 #388e3c; 
+        #hint-box {
+            margin-top: 15px; background: rgba(0, 255, 157, 0.05);
+            padding: 15px; border-radius: 12px;
+            font-size: 0.85rem; border: 1px dashed var(--border);
+            display: none;
         }
 
-        .formula {
-            font-family: 'Fredoka One', cursive; font-size: 1.5rem;
-            color: #d84315; margin: 10px 0;
-        }
-
+        /* Success View */
         .hidden { display: none; }
-        
-        .science-card {
-            background: #fff3e0; border-radius: 20px; padding: 15px;
-            margin-top: 15px; text-align: left; border-left: 6px solid #ff9800;
-        }
+        .success-text { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
 
-        .shake { animation: shake 0.4s ease-in-out; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+            20% { transform: translateX(-5px); }
+            60% { transform: translateX(5px); }
         }
+        .shake { animation: shake 0.3s ease-in-out; border-color: #ff4444 !important; }
     </style>
 </head>
 <body>
 
-    <div class="nav-header">
-        <a href="/" class="home-btn" aria-label="Home">🏠</a>
+    <div class="nav-container">
+        <a href="/" class="home-btn">✕</a>
     </div>
 
-    <div class="game-container" id="main-container">
+    <div class="game-container" id="terminal-card">
         <div id="puzzle-view">
-            <h1>The Growth Explosion! 🌱</h1>
+            <h1>Bio-Gen Lab</h1>
+            <p class="subtitle">Growth Rate Analysis</p>
             
-            <div id="hint-box" class="hint-box">
-                <div id="hint-visual">
-                    <strong style="color: #f57f17;">Pattern: It Doubles!</strong>
-                    <div class="visual-growth">
-                        <div style="font-size: 1rem;">🌱</div>
-                        <div style="font-size: 1.5rem;">🌱</div>
-                        <div style="font-size: 2rem;">🌱</div>
-                        <div style="font-size: 3rem;">🌳</div>
-                    </div>
-                </div>
-                <div id="hint-formula" class="hidden">
-                    <div class="formula">2<sup>6</sup> = ?</div>
-                    <small>Calculate: 2 × 2 × 2 × 2 × 2 × 2</small>
+            <div class="puzzle-zone">
+                <div class="data-row"><span>T+01 CYCLE</span> <span>02 CM</span></div>
+                <div class="data-row"><span>T+02 CYCLE</span> <span>04 CM</span></div>
+                <div class="data-row"><span>T+03 CYCLE</span> <span>08 CM</span></div>
+                <div class="data-row" style="background: rgba(0, 255, 157, 0.05);">
+                    <span>T+06 CYCLE</span> <span>[ ?? ]</span>
                 </div>
             </div>
 
-            <div class="puzzle-zone">
-                <div class="data-row"><span>Day 1:</span> <span>2 cm</span></div>
-                <div class="data-row"><span>Day 2:</span> <span>4 cm</span></div>
-                <div class="data-row"><span>Day 3:</span> <span>8 cm</span></div>
-                <div class="data-row highlight-day"><span>Day 6:</span> <span>? cm</span></div>
-            </div>
+            
 
             <div class="input-group">
-                <input type="number" id="ans-input" inputmode="numeric" placeholder="???" autofocus>
-                <button class="btn-action" onclick="checkGrowth()">Unlock Lab!</button>
-                <button id="hint-btn" class="btn-action btn-hint" onclick="showNextHint()">💡 Need a Hint?</button>
+                <input type="number" id="ans-input" inputmode="numeric" placeholder="00" autofocus>
+                <button class="btn-prime" onclick="checkGrowth()">CALCULATE GROWTH</button>
+                <button class="btn-hint" onclick="toggleHint()">RECOVER PATTERN DATA</button>
+                
+                <div id="hint-box">
+                    <strong>SEQUENCE LOG:</strong><br>
+                    Multiplier: 2^n <br>
+                    Iteration 6: 2 × 2 × 2 × 2 × 2 × 2
+                </div>
             </div>
-            <div id="status" style="margin-top: 15px; min-height: 24px; font-weight: 800; color: var(--wrong);"></div>
+            <div id="status" style="margin-top: 20px; text-align: center; font-size: 0.8rem; font-family: 'JetBrains Mono';"></div>
         </div>
 
         <div id="result-view" class="hidden">
-            <div style="font-size: 5rem; margin-bottom: 10px;">🌳</div>
-            <h1 style="color: var(--correct);">64 cm! Brilliant!</h1>
+            <div style="font-size: 4rem; margin-bottom: 10px;">🧪</div>
+            <h1 class="success-text">ANALYSIS COMPLETE</h1>
+            <p style="color: #888; margin: 20px 0;">Calculated Value: 64 CM<br>Pattern: Exponential Doubling</p>
             
-            <div class="science-card">
-                <strong>🔬 The Secret:</strong>
-                <p style="font-size: 0.95rem; margin: 8px 0; color: #5d4037;">
-                    That's <b>Exponential Growth</b>! Every day the size doubles.
-                </p>
+            <div style="background: var(--glass); padding: 15px; border-radius: 15px; font-size: 0.9rem; text-align: left; border-left: 4px solid var(--neon-green);">
+                <code style="color: var(--neon-green);">EXP_GROWTH_DETECTED</code><br>
+                In biology, this occurs during rapid cell division or bacterial multiplication.
             </div>
 
-            <button class="btn-action" onclick="location.reload()" style="background: #795548; box-shadow: 0 6px 0 #5d4037; margin-top: 20px;">Try Again</button>
+            <button class="btn-prime" onclick="location.reload()" style="background: transparent; border: 1px solid var(--neon-green); color: var(--neon-green); margin-top: 25px; width: 100%;">RE-RUN SIMULATION</button>
         </div>
     </div>
 
     <script>
-        let hintStage = 0;
-
-        function showNextHint() {
-            const box = document.getElementById('hint-box');
-            const formula = document.getElementById('hint-formula');
-            const btn = document.getElementById('hint-btn');
-            box.style.display = "block";
-            if (hintStage === 1) {
-                formula.classList.remove('hidden');
-                btn.style.display = "none";
-            }
-            hintStage++;
+        function toggleHint() {
+            const hint = document.getElementById('hint-box');
+            hint.style.display = (hint.style.display === 'block') ? 'none' : 'block';
         }
 
         function checkGrowth() {
-            const val = document.getElementById('ans-input').value;
+            const input = document.getElementById('ans-input');
             const status = document.getElementById('status');
-            const container = document.getElementById('main-container');
+            const card = document.getElementById('terminal-card');
 
-            if (val === "64") {
+            if (input.value === "64") {
                 document.getElementById('puzzle-view').classList.add('hidden');
                 document.getElementById('result-view').classList.remove('hidden');
-                triggerBloom();
+                spawnParticles();
             } else {
-                status.innerText = "Check the pattern again! ☝️";
-                container.classList.add('shake');
-                setTimeout(() => container.classList.remove('shake'), 400);
-                document.getElementById('ans-input').value = "";
+                status.innerText = "ERROR: SEQUENCE_MISMATCH";
+                status.style.color = "#ff4444";
+                card.classList.add('shake');
+                setTimeout(() => card.classList.remove('shake'), 300);
+                input.value = "";
+                input.focus();
             }
         }
 
-        function triggerBloom() {
-            for (let i = 0; i < 30; i++) {
-                const leaf = document.createElement('div');
-                leaf.innerText = i % 2 === 0 ? '🍃' : '🌸';
-                leaf.style.position = 'fixed';
-                leaf.style.left = Math.random() * 100 + 'vw';
-                leaf.style.top = '-20px';
-                leaf.style.fontSize = '24px';
-                leaf.style.zIndex = '1000';
-                document.body.appendChild(leaf);
-                
-                leaf.animate([
-                    { transform: 'translateY(0) rotate(0)', opacity: 1 },
-                    { transform: `translateY(110vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-                ], { duration: 2000 + Math.random() * 2000, easing: 'linear' }).onfinish = () => leaf.remove();
+        function spawnParticles() {
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.innerHTML = "🧬";
+                p.style.position = 'fixed';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = '-20px';
+                p.style.zIndex = '100';
+                document.body.appendChild(p);
+                p.animate([
+                    { transform: 'translateY(0)', opacity: 1 },
+                    { transform: `translateY(110vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], { duration: 1500 + Math.random() * 1000 }).onfinish = () => p.remove();
             }
         }
     </script>
