@@ -9,6 +9,8 @@
             --primary-purple: #9B72F2;
             --accent-yellow: #FFD93D;
             --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 40%, #a18cd1 100%);
+            --success-green: #4CAF50;
+            --error-red: #FF5252;
         }
 
         body {
@@ -24,7 +26,7 @@
             color: #333;
         }
 
-        /* Sticky Header with Home Button */
+        /* Header Styles */
         .header-section {
             position: sticky;
             top: 0;
@@ -68,28 +70,12 @@
             transition: all 0.1s;
         }
 
-        .home-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 0px var(--primary-purple);
-        }
-
-        h1 {
-            font-size: 1.2rem;
-            margin: 0;
-            color: var(--primary-purple);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 900;
-        }
-
         #score-container {
             background: var(--accent-yellow);
             padding: 5px 15px;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1rem;
             border: 2px solid white;
-            white-space: nowrap;
         }
 
         .progress-container {
@@ -103,9 +89,9 @@
 
         #progress-fill {
             height: 100%;
-            background: #4CAF50;
+            background: var(--success-green);
             width: 0%;
-            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: width 0.4s ease;
         }
 
         /* Game Cards */
@@ -124,20 +110,9 @@
             border: 4px solid var(--accent-yellow);
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             box-sizing: border-box;
-            animation: slideUp 0.5s ease-out;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .question-header {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
+        .question-header { display: flex; align-items: flex-start; margin-bottom: 15px; }
         .question-number {
             background: var(--accent-yellow);
             min-width: 32px;
@@ -149,14 +124,6 @@
             font-weight: bold;
             border: 2px solid #333;
             margin-right: 12px;
-            margin-top: 2px;
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: 700;
-            line-height: 1.4;
-            color: #2D3436;
         }
 
         .option-btn {
@@ -173,46 +140,64 @@
             cursor: pointer;
             box-shadow: 0 5px 0px #7b52cc;
             transition: all 0.1s;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        .option-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0px #7b52cc;
+        /* Pop-up Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
-        .option-btn:disabled { opacity: 0.6; }
-
-        .feedback {
-            margin-top: 10px;
-            font-weight: 800;
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            max-width: 400px;
+            width: 100%;
             text-align: center;
-            min-height: 1.5rem;
+            position: relative;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .correct { border-color: #4CAF50 !important; background: #f0fff0; }
-        .wrong { animation: shake 0.3s ease-in-out; border-color: #FF5252 !important; }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        footer {
-            margin: 40px 0;
+        .modal-header { font-size: 1.5rem; font-weight: 900; margin-bottom: 15px; }
+        .modal-body { font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px; color: #444; }
+        
+        .close-modal-btn {
+            background: var(--primary-purple);
             color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 15px;
             font-weight: bold;
-            opacity: 0.9;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0px #7b52cc;
         }
+
+        .correct-text { color: var(--success-green); }
+        .wrong-text { color: var(--error-red); }
+
+        footer { margin: 40px 0; color: white; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="header-section">
         <div class="header-top">
-            <a href="/" class="home-btn" aria-label="Home">🏠</a>
-            <h1>Glow-Up</h1>
+            <a href="/" class="home-btn">🏠</a>
+            <h1 style="font-size: 1.2rem; color: var(--primary-purple); margin:0;">Glow-Up</h1>
             <div id="score-container">✨ <span id="score">0</span></div>
         </div>
         <div class="progress-container">
@@ -220,17 +205,48 @@
         </div>
     </div>
 
-    <div class="game-container" id="game-container">
+    <div class="game-container" id="game-container"></div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <div id="modal-header" class="modal-header"></div>
+            <div id="modal-body" class="modal-body"></div>
+            <button class="close-modal-btn" onclick="closeModal()">Got it! ✨</button>
         </div>
+    </div>
 
     <footer>Keep glowing! ✨</footer>
 
     <script>
         const puzzles = [
-            { id: 1, question: "Everyone in the class _______ finished the test.", options: ["have", "has", "are"], correct: "has" },
-            { id: 2, question: "I enjoy _______ mystery books at night.", options: ["to read", "reading", "read"], correct: "reading" },
-            { id: 3, question: "The team _______ excited about their victory.", options: ["was", "were", "are"], correct: "was" },
-            { id: 4, question: "Neither of the movies _______ very good.", options: ["was", "were", "been"], correct: "was" }
+            { 
+                id: 1, 
+                question: "Everyone in the class _______ finished the test.", 
+                options: ["have", "has", "are"], 
+                correct: "has",
+                explanation: "'Everyone' is an indefinite pronoun that is always singular. Therefore, it needs the singular verb 'has' instead of the plural 'have'."
+            },
+            { 
+                id: 2, 
+                question: "I enjoy _______ mystery books at night.", 
+                options: ["to read", "reading", "read"], 
+                correct: "reading",
+                explanation: "The verb 'enjoy' is followed by a gerund (-ing form). You enjoy *doing* something, not *to do* something."
+            },
+            { 
+                id: 3, 
+                question: "The team _______ excited about their victory.", 
+                options: ["was", "were", "are"], 
+                correct: "was",
+                explanation: "'Team' is a collective noun acting as a single unit here, so it takes the singular verb 'was'."
+            },
+            { 
+                id: 4, 
+                question: "Neither of the movies _______ very good.", 
+                options: ["was", "were", "been"], 
+                correct: "was",
+                explanation: "When using 'Neither of...', the subject is 'Neither', which is singular. It should be 'Neither was', not 'Neither were'."
+            }
         ];
 
         let score = 0;
@@ -243,7 +259,7 @@
                 <div class="card" id="puzzle-${p.id}">
                     <div class="question-header">
                         <div class="question-number">${index + 1}</div>
-                        <div class="question-text">${p.question}</div>
+                        <div class="question-text"><strong>${p.question}</strong></div>
                     </div>
                     <div class="options-list">
                         ${p.options.map(opt => `
@@ -252,38 +268,49 @@
                             </button>
                         `).join('')}
                     </div>
-                    <div id="feedback-${p.id}" class="feedback"></div>
                 </div>
             `).join('');
         }
 
-function checkAnswer(id, userAnswer, btnElement) {
+        function checkAnswer(id, userAnswer, btnElement) {
             if (answeredIds.has(id)) return;
 
             const puzzle = puzzles.find(p => p.id === id);
-            const card = document.getElementById(`puzzle-${id}`);
-            const feedback = document.getElementById(`feedback-${id}`);
-            const buttons = card.querySelectorAll('.option-btn');
-
-            // Mark as answered so they can't click again
+            const isCorrect = userAnswer === puzzle.correct;
+            
             answeredIds.add(id);
             answeredCount++;
             updateProgress();
+
+            // Visual feedback on card
+            const buttons = document.getElementById(`puzzle-${id}`).querySelectorAll('.option-btn');
             buttons.forEach(btn => btn.disabled = true);
 
-            if (userAnswer === puzzle.correct) {
-                card.classList.add('correct');
-                feedback.innerHTML = "<span style='color: #2e7d32'>✅ Perfect!</span>";
+            if (isCorrect) {
                 score += 100;
                 document.getElementById('score').innerText = score;
+                showModal("✅ Awesome!", puzzle.explanation, true);
+                btnElement.style.background = "var(--success-green)";
             } else {
-                card.classList.add('wrong');
-                // Highlight the button they clicked as wrong
-                btnElement.style.background = "#FF5252";
-                btnElement.style.boxShadow = "0 5px 0px #b33939";
-                
-                feedback.innerHTML = `<span style='color: #d32f2f'>❌ Incorrect. Correct: <strong>${puzzle.correct}</strong></span>`;
+                btnElement.style.background = "var(--error-red)";
+                showModal("❌ Not Quite", puzzle.explanation, false);
             }
+        }
+
+        function showModal(title, text, isCorrect) {
+            const modal = document.getElementById('modal-overlay');
+            const header = document.getElementById('modal-header');
+            const body = document.getElementById('modal-body');
+
+            header.innerText = title;
+            header.className = isCorrect ? 'modal-header correct-text' : 'modal-header wrong-text';
+            body.innerText = text;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
         }
 
         function updateProgress() {
